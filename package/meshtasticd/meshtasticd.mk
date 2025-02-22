@@ -6,7 +6,7 @@
 # See https://bootlin.com/~thomas/site/buildroot/adding-packages.html#generic-package-tutorial
 
 # renovate: datasource=github-releases depName=meshtasticd packageName=meshtastic/firmware versioning=semver-coerced
-MESHTASTICD_VERSION = v2.5.14.f2ee0df
+MESHTASTICD_VERSION = v2.5.20.4c97351
 MESHTASTICD_SITE = https://github.com/meshtastic/firmware
 MESHTASTICD_SITE_METHOD = git
 MESHTASTICD_GIT_SUBMODULES = YES
@@ -43,6 +43,7 @@ MESHTASTICD_DEPENDENCIES += \
 	host-pkgconf \
 	$(TARGET_NLS_DEPENDENCIES) \
 	libgpiod \
+	libusb \
 	yaml-cpp \
 	zlib \
 	bluez5_utils
@@ -50,6 +51,7 @@ MESHTASTICD_DEPENDENCIES += \
 # Flags
 MESHTASTICD_PLATFORMIO_BUILD_FLAGS = \
 	-std=c++17 \
+	-Os -ffunction-sections -fdata-sections -Wl,--gc-sections \
 	$(TARGET_NLS_LIBS)
 
 MESHTASTICD_PLATFORMIO_CFLAGS = \
@@ -108,15 +110,15 @@ define MESHTASTICD_BUILD_CMDS
 	PLATFORMIO_BUILD_FLAGS="$(MESHTASTICD_PLATFORMIO_BUILD_FLAGS)" \
 	PLATFORMIO_CACHE_DIR="$(DL_DIR)/.platformio_cache" \
 	PLATFORMIO_BUILD_CACHE_DIR="$(BUILD_DIR)/.platformio_build_cache" \
-	$(HOST_DIR)/bin/python3 -m platformio run --environment native --project-dir $(@D)
+	$(HOST_DIR)/bin/python3 -m platformio run --environment buildroot --project-dir $(@D)
 endef
 
 define MESHTASTICD_INSTALL_TARGET_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/.pio/build/native/program $(TARGET_DIR)/usr/sbin/meshtasticd
+	$(INSTALL) -D -m 0755 $(@D)/.pio/build/buildroot/program $(TARGET_DIR)/usr/sbin/meshtasticd
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/etc/meshtasticd/config.d
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/etc/meshtasticd/available.d
 	$(INSTALL) -D -m 0644 $(@D)/bin/config-dist.yaml $(TARGET_DIR)/etc/meshtasticd/config.yaml
-	$(INSTALL) -D -m 0644 $(@D)/bin/config.d/* $(TARGET_DIR)/etc/meshtasticd/available.d/
+	#$(INSTALL) -D -m 0644 $(@D)/bin/config.d/* $(TARGET_DIR)/etc/meshtasticd/available.d/
 	$(INSTALL) -D -m 0644 $(MESHTASTICD_PKGDIR)/config.d/* $(TARGET_DIR)/etc/meshtasticd/available.d/
 	$(MESHTASTICD_AVAHI_INSTALL_TARGET_CMDS)
 endef
