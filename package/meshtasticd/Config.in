@@ -26,6 +26,7 @@ config BR2_PACKAGE_MESHTASTICD
 	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # for i2c_tools
 	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT # dep for meson. Don't know if it's really used by meshtastic
 	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBXKBCOMMON
 	help
 	  meshtasticd portduino-buildroot
 

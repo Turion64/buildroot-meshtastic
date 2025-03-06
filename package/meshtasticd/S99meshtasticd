@@ -10,6 +10,7 @@ DAEMON=/usr/sbin/$NAME
 PIDFILE=/var/run/$NAME.pid
 # Meshtasticd needs HOME to be set or it will use `/`
 export HOME="/root"
+export DISPLAY=:0	#xorg output
 
 MESHTATICD_ARGS=""
 
