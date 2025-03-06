@@ -110,16 +110,17 @@ define MESHTASTICD_BUILD_CMDS
 	PLATFORMIO_BUILD_FLAGS="$(MESHTASTICD_PLATFORMIO_BUILD_FLAGS)" \
 	PLATFORMIO_CACHE_DIR="$(DL_DIR)/.platformio_cache" \
 	PLATFORMIO_BUILD_CACHE_DIR="$(BUILD_DIR)/.platformio_build_cache" \
-	$(HOST_DIR)/bin/python3 -m platformio run --environment native-tft --project-dir $(@D)
+	$(HOST_DIR)/bin/python3 -m platformio run --environment buildroot-tft --project-dir $(@D)
 endef
 
 define MESHTASTICD_INSTALL_TARGET_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/.pio/build/buildroot/program $(TARGET_DIR)/usr/sbin/meshtasticd
+	$(INSTALL) -D -m 0755 $(@D)/.pio/build/buildroot-tft/program $(TARGET_DIR)/usr/sbin/meshtasticd
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/etc/meshtasticd/config.d
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/etc/meshtasticd/available.d
 	$(INSTALL) -D -m 0644 $(@D)/bin/config-dist.yaml $(TARGET_DIR)/etc/meshtasticd/config.yaml
 	#$(INSTALL) -D -m 0644 $(@D)/bin/config.d/* $(TARGET_DIR)/etc/meshtasticd/available.d/
-	$(INSTALL) -D -m 0644 $(MESHTASTICD_PKGDIR)/config.d/* $(TARGET_DIR)/etc/meshtasticd/available.d/
+	$(INSTALL) -D -m 0644 $(MESHTASTICD_PKGDIR)/available-config.d/* $(TARGET_DIR)/etc/meshtasticd/available.d/
+	$(INSTALL) -D -m 0644 $(MESHTASTICD_PKGDIR)/config.d/* $(TARGET_DIR)/etc/meshtasticd/config.d/
 	$(MESHTASTICD_AVAHI_INSTALL_TARGET_CMDS)
 endef
 
