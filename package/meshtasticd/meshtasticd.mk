@@ -6,7 +6,7 @@
 # See https://bootlin.com/~thomas/site/buildroot/adding-packages.html#generic-package-tutorial
 
 # renovate: datasource=github-releases depName=meshtasticd packageName=meshtastic/firmware versioning=semver-coerced
-MESHTASTICD_VERSION = v2.5.20.4c97351
+MESHTASTICD_VERSION = tft-gui-work
 MESHTASTICD_SITE = https://github.com/meshtastic/firmware
 MESHTASTICD_SITE_METHOD = git
 MESHTASTICD_GIT_SUBMODULES = YES
@@ -110,7 +110,7 @@ define MESHTASTICD_BUILD_CMDS
 	PLATFORMIO_BUILD_FLAGS="$(MESHTASTICD_PLATFORMIO_BUILD_FLAGS)" \
 	PLATFORMIO_CACHE_DIR="$(DL_DIR)/.platformio_cache" \
 	PLATFORMIO_BUILD_CACHE_DIR="$(BUILD_DIR)/.platformio_build_cache" \
-	$(HOST_DIR)/bin/python3 -m platformio run --environment buildroot --project-dir $(@D)
+	$(HOST_DIR)/bin/python3 -m platformio run --environment native-tft --project-dir $(@D)
 endef
 
 define MESHTASTICD_INSTALL_TARGET_CMDS
