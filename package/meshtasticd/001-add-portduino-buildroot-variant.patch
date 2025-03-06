@@ -1,0 +1,10 @@
+--- /dev/null	2025-03-06 22:36:56.976826713 +0100
++++ b/variants/portduino-buildroot/variant.h	2025-02-22 18:14:54.000000000 +0100
+@@ -1,4 +1,7 @@
++#include "PortduinoGlue.h"  // works but should not be there !! TODO
++#ifndef HAS_SCREEN
+ #define HAS_SCREEN 1
++#endif
+ #define CANNED_MESSAGE_MODULE_ENABLE 1
+ #define HAS_GPS 1
+ #define MAX_RX_TOPHONE settingsMap[maxtophone]
